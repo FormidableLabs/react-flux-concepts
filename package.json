@@ -1,0 +1,11 @@
+{
+  "name": "react-flux-concepts",
+  "version": "0.0.1",
+  "description": "Branches of this repo cover the concepts of react and flux in a hands on way",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}
