@@ -7,10 +7,27 @@
 	<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
 </head>
 <body>
-	
+	<!-- create a container --> 
+	<div id="app-container"></div>
 
-	<script type="text/javascript">
-
+	<!-- note this is not type javascript -->
+	<script type="text/jsx">
+	/* create a class */
+	var RecipeBook = React.createClass({
+	  render: function() {
+	    return (
+	      <div>
+	        Hello, world! I am a RecipeBook.
+	      </div>
+	    );
+	  }
+	});
+	/* controller view calls render */ 
+	React.render(
+		/* Recipe book is just a function, attrs are args */
+	  <RecipeBook />,
+	  document.getElementById('app-container')
+	);
 	</script>
 </body>
 </html>
