@@ -6,7 +6,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
-	<!-- ADDING REACT ROUTER --> 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
 	<script type="text/javascript">
 		var data = [
@@ -33,8 +32,9 @@
 	var RecipeDetails = React.createClass({
 		getInitialState: function () {
 			console.log(this.props)
+			/* grab the correct recipe, set it to state */ 
 			return _.find(this.props.data, {_id: this.props.params._id});
-		},
+		},	
 		render: function(){
 			
 			return (
@@ -60,7 +60,6 @@
 	  }
 	});
 	var RecipeList = React.createClass({
-		/* GETTER */
 		getInitialState:  function () {
 			return {data: data}
 		},
@@ -88,11 +87,11 @@
 	    return (
 	      <div >
 	        **RecipeForm.**
+
 	      </div>
 	    );
 	  }
 	});
-	/* add a home route */
 	var Home = React.createClass({
 		render: function () {
 			return (
@@ -109,6 +108,7 @@
 		      <div> 
 		      	<Link to="/">Home</Link>
 		      	<Link to="recipes"> Recipes </Link>
+		      	<Link to="create"> Create </Link>
 		      </div> 
 	        **Hello, world! I am a RecipeBook.**
 	        <RouteHandler {...this.props}/>
@@ -122,10 +122,6 @@
 	var DefaultRoute = Router.DefaultRoute;
 	var Link = Router.Link 
 	var RouteHandler = Router.RouteHandler;
-	/** 
-	* STEP 1: define routes & 'handlers' (components are handlers)
-	* see: https://github.com/rackt/react-router/blob/master/docs/guides/overview.md#with-react-router
-	*/ 
 	var routes = (
 	  <Route name="RecipeBook" path="/" handler={RecipeBook}>
 	    <DefaultRoute handler={Home}/>
@@ -135,10 +131,6 @@
 	    <Route name="create" handler={RecipeForm}/>
 	  </Route>
 	);
-	/**
-	* STEP 2: call router.run, pass params into handler so they are available to components
-	* move React.render into router
-	*/
 	Router.run(routes, function (Handler, state) {
   	var params = state.params;
   	React.render(<Handler params={params} data={data}/>, document.body);
