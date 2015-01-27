@@ -13,11 +13,31 @@
 	<!-- note this is not type javascript -->
 	<script type="text/jsx">
 	/* create a class */
+	var RecipeList = React.createClass({
+	  render: function() {
+	    return (
+	      <div>
+	      	RecipeList.
+	      </div>
+	    );
+	  }
+	});
+	var RecipeForm = React.createClass({
+	  render: function() {
+	    return (
+	      <div >
+	        RecipeForm.
+	      </div>
+	    );
+	  }
+	});
 	var RecipeBook = React.createClass({
 	  render: function() {
 	    return (
 	      <div>
 	        Hello, world! I am a RecipeBook.
+	        <RecipeList/>
+	        <RecipeForm/>
 	      </div>
 	    );
 	  }
