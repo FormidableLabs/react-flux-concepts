@@ -8,10 +8,9 @@
 	<!-- ADDING REACT ROUTER --> 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
 	<script type="text/javascript">
-		/* STEP 0: define some data globally */ 
 		var data = [
-			{title: "Stuffed Chard", instructions: "Stuff the chard..."},
-			{title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
+			{id: "QQQ", title: "Stuffed Chard", instructions: "Stuff the chard..."},
+			{id: "YYY", title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
 		];
 	</script>
 </head>
@@ -19,10 +18,12 @@
 	<div id="app-container"></div>
 
 	<script type="text/jsx">
+
+
 	var Recipe = React.createClass({
 	  render: function() {
 	    return (
-	      <div >
+	      <div>
 	        <h2> {this.props.title} </h2>
 	        <p> {this.props.instructions} </p>
 	      </div>
@@ -30,17 +31,12 @@
 	  }
 	});
 	var RecipeList = React.createClass({
+		/* GETTER */
+		getInitialState:  function () {
+			return {data: data}
+		},
 	  render: function() {
-	  	/**
-	  	* STEP 3: iterate over the data received in props, 
-			* passing properties of each item into the collection
-			* into a unique child component. 
-	  	*/
-	    var recipeNodes = this.props.data.map(function(recipe, index){
-	    	/** 
-	    	* each item in a collection needs a key... see: 
-				* http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-	    	*/ 
+	    var recipeNodes = this.state.data.map(function(recipe, index){
 	    	return (
 	    		<Recipe
 	    			key={index}
@@ -52,6 +48,7 @@
 	      <div>
 	      	RecipeList.
 	      	{recipeNodes}
+	      	<RouteHandler {...this.props}/>
 	      </div>
 	    );
 	  }
@@ -65,23 +62,56 @@
 	    );
 	  }
 	});
+	/* add a home route */
+	var Home = React.createClass({
+		render: function () {
+			return (
+				<div>
+				Home rendered, welcome text, etc
+				</div>
+			)
+		}
+	})
 	var RecipeBook = React.createClass({
 	  render: function() {
-      /* STEP 2: pass the recieved prop into the child component */
 	    return (
 	      <div>
+		      <div> 
+		      	<Link to="/">Home</Link>
+		      	<Link to="recipes"> Recipes </Link>
+		      </div> 
 	        Hello, world! I am a RecipeBook.
-	        <RecipeList data={this.props.data}/>
-	        <RecipeForm/>
+	        <RouteHandler {...this.props}/>
 	      </div>
 	    );
 	  }
 	});
-	React.render(
-		/* STEP 1: pass the global data variable into the controller view */
-	  <RecipeBook data={data} />,
-	  document.getElementById('app-container')
+
+	var Router = ReactRouter;
+	var Route = Router.Route; 
+	var DefaultRoute = Router.DefaultRoute;
+	var Link = Router.Link 
+	var RouteHandler = Router.RouteHandler;
+	/** 
+	* STEP 1: define routes & 'handlers' (components are handlers)
+	* see: https://github.com/rackt/react-router/blob/master/docs/guides/overview.md#with-react-router
+	*/ 
+	var routes = (
+	  <Route name="RecipeBook" path="/" handler={RecipeBook}>
+	    <DefaultRoute handler={Home}/>
+	    <Route name="recipes" handler={RecipeList}/>
+	    <Route name="recipe" handler={Recipe}/>
+	    <Route name="create" handler={RecipeForm}/>
+	  </Route>
 	);
+	/**
+	* STEP 2: call router.run, pass params into handler so they are available to components
+	* move React.render into router
+	*/
+	Router.run(routes, function (Handler, state) {
+  	var params = state.params;
+  	React.render(<Handler params={params}/>, document.body);
+	});
 	</script>
 </body>
 </html>
