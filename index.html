@@ -7,12 +7,9 @@
 	<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
 </head>
 <body>
-	<!-- create a container --> 
 	<div id="app-container"></div>
 
-	<!-- note this is not type javascript -->
 	<script type="text/jsx">
-	/* create a class */
 	var RecipeList = React.createClass({
 	  render: function() {
 	    return (
@@ -36,15 +33,14 @@
 	    return (
 	      <div>
 	        Hello, world! I am a RecipeBook.
+	        /* component composition == function componsition */
 	        <RecipeList/>
 	        <RecipeForm/>
 	      </div>
 	    );
 	  }
 	});
-	/* controller view calls render */ 
 	React.render(
-		/* Recipe book is just a function, attrs are args */
 	  <RecipeBook />,
 	  document.getElementById('app-container')
 	);
