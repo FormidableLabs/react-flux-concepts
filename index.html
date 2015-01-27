@@ -3,23 +3,26 @@
 	<style type="text/css">
 
 	</style>
-	<script src="http://fb.me/react-0.12.2.js"></script>
-	<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+	<!-- ADDING REACT ROUTER --> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+	<script type="text/javascript">
+		/* STEP 0: define some data globally */ 
+		var data = [
+			{title: "Stuffed Chard", instructions: "Stuff the chard..."},
+			{title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
+		];
+	</script>
 </head>
 <body>
 	<div id="app-container"></div>
 
 	<script type="text/jsx">
 	var Recipe = React.createClass({
-		getInitialState: function () {
-			/* remember, we really invoked a function and passed in args. */
-			console.log(this.props)
-			/* Recipe.getInitialState(): must return an object or null */
-			return null;
-		},
 	  render: function() {
 	    return (
-	      <div>
+	      <div >
 	        <h2> {this.props.title} </h2>
 	        <p> {this.props.instructions} </p>
 	      </div>
@@ -28,17 +31,27 @@
 	});
 	var RecipeList = React.createClass({
 	  render: function() {
+	  	/**
+	  	* STEP 3: iterate over the data received in props, 
+			* passing properties of each item into the collection
+			* into a unique child component. 
+	  	*/
+	    var recipeNodes = this.props.data.map(function(recipe, index){
+	    	/** 
+	    	* each item in a collection needs a key... see: 
+				* http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
+	    	*/ 
+	    	return (
+	    		<Recipe
+	    			key={index}
+	    			title={recipe.title}
+	    			instructions={recipe.instructions} />
+	    	)
+	    })
 	    return (
 	      <div>
 	      	RecipeList.
-	      	<Recipe
-	      		title="Stuffed Chard"
-	      		instructions="Stuff the chard..."
-	      	/>
-	      	<Recipe
-	      		title="Eggplant and Polenta"
-	      		instructions="Put the eggplant in the oven..."
-	      	/>
+	      	{recipeNodes}
 	      </div>
 	    );
 	  }
@@ -54,17 +67,19 @@
 	});
 	var RecipeBook = React.createClass({
 	  render: function() {
+      /* STEP 2: pass the recieved prop into the child component */
 	    return (
 	      <div>
 	        Hello, world! I am a RecipeBook.
-	        <RecipeList/>
+	        <RecipeList data={this.props.data}/>
 	        <RecipeForm/>
 	      </div>
 	    );
 	  }
 	});
 	React.render(
-	  <RecipeBook />,
+		/* STEP 1: pass the global data variable into the controller view */
+	  <RecipeBook data={data} />,
 	  document.getElementById('app-container')
 	);
 	</script>
