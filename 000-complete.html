@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<head>
+	<style type="text/css">
+
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+	<script src="http://kenwheeler.github.io/mcfly/McFly.js"></script>
+</head>
+<body>
+	<div id="app-container"></div>
+	<script type="text/jsx">
+	/** 
+	* Step 1: instantiate mcfly, our flux factory
+	*/
+	var Flux = new McFly();
+
+	/**
+	* Step 2: create an action for our component to fire
+	*/ 
+	var RecipeActions = Flux.createActions({
+		recipeCreated: function(data){
+			console.log(data)
+			return {
+				actionType: "RECIPE_CREATE",
+				data: data
+			}
+		}
+	});
+
+	/**
+	* Step 3: create a store
+	*/
+	var RecipeStore = Flux.createStore({
+		_recipes: [
+			{
+				_id: "QQQ", 
+				title: "Stuffed Chard", 
+				instructions: "Stuff the chard...", 
+				detailsRendered: "FOO CHARD DETAILS WOO!"
+			},
+			{
+				_id: "YYY", 
+				title: "Eggplant and Polenta", 
+				instructions: "Put the eggplant in the oven...",
+				detailsRendered: "BAR EGGPLANT HAH HAH!!"
+			}
+		],
+		/* private setter */ 
+		_addRecipe: function (recipe) {
+			this._recipes.push(recipe)
+		},
+		/* public getter */
+		getRecipes: function (_id) {
+			if (_id) {
+				return _.find(this._recipes, {_id: _id})
+			}
+			return this._recipes
+		}
+	}, function(payload){
+		if(payload.actionType === "RECIPE_CREATE") {
+			console.log("in store, ", payload)
+			/* when modularized, this should be private. */ 
+			RecipeStore._addRecipe(payload.data)
+		}
+	});
+
+	var RecipeDetails = React.createClass({
+		getInitialState: function () {
+			console.log(this.props)
+			return _.find(this.props.data, {_id: this.props.params._id});
+		},
+		render: function(){
+			return (
+				<div>
+					<h3> {this.state.title} </h3> 
+					<p> {this.state.instructions} </p>
+					<p> {this.state.detailsRendered} id: {this.props.params._id} </p>
+					<RouteHandler {...this.props}/>
+				</div>
+			)
+		}
+	})
+	var Recipe = React.createClass({
+	  render: function() {
+	    return (
+	      <div>
+	        <h2> {this.props.title} </h2>
+	        <p> {this.props.instructions} </p>
+	       	<Link to="recipeDetails" params={{_id: this.props._id}}> See more </Link>
+	       	<RouteHandler/>
+	      </div>
+	    );
+	  }
+	});
+	var RecipeList = React.createClass({
+	  render: function() {
+	    var recipeNodes = this.props.data.map(function(recipe, index){
+	    	return (
+	    		<Recipe
+	    			key={index}
+	    			_id={recipe._id}
+	    			title={recipe.title}
+	    			instructions={recipe.instructions} />
+	    	)
+	    })
+	    return (
+	      <div>
+	      	**RecipeList.**
+	      	{recipeNodes}
+	      	<RouteHandler {...this.props}/>
+	      </div>
+	    );
+	  }
+	});
+	var RecipeForm = React.createClass({
+		/**
+		* Step 0: Add a form & form method
+		*/
+		handleCreate: function(){
+			/* Step 4.1: construct object from refs */ 
+			var recipe = {
+				_id: Math.floor(Math.random() * 10000000),
+				title: this.refs.titleValue.getDOMNode().value,
+				instructions: this.refs.instructionsValue.getDOMNode().value,
+				detailsRendered: this.refs.detailsValue.getDOMNode().value
+			}
+
+			/**
+			* Step 4.2: Fire action with data
+			*/
+			RecipeActions.recipeCreated(recipe)
+
+			return;
+		},
+	  render: function() {
+	    return (
+	      <div>
+	        **RecipeForm.**
+	        <div>
+	        <input 
+	        	placeholder="title"
+	        	ref="titleValue"
+	        	> </input>
+	        <input 
+	        	placeholder="instructions"
+	        	ref="instructionsValue"
+	        	> </input>
+	        <input 
+	        	placeholder="details"
+	        	ref="detailsValue"
+	        	> </input>
+	        <button onClick={this.handleCreate}> Create </button>
+	        </div>
+	      </div>
+	    );
+	  }
+	});
+	var Home = React.createClass({
+		render: function () {
+			return (
+				<div>
+				**Home rendered, welcome text, etc**
+				</div>
+			)
+		}
+	})
+	/**
+	* Step 5 set up a controller view to listen to the store events
+	*/
+	var RecipeBook = React.createClass({
+		mixins: [RecipeStore.mixin],
+		getInitialState: function (){
+			return this.getState();
+		},
+		getState: function() {
+			return { recipes: RecipeStore.getRecipes() }
+		},
+		onChange: function() {
+			this.setState(this.getState())
+			return 
+		},
+	  render: function() {
+	    return (
+	      <div>
+		      <div> 
+		      	<Link to="/">Home</Link>
+		      	<Link to="recipes"> Recipes </Link>
+		      	<Link to="create"> Create </Link>
+		      </div> 
+	        **Hello, world! I am a RecipeBook.**
+	        <RouteHandler {...this.props} data={this.state.recipes}/>
+	      </div>
+	    );
+	  }
+	});
+
+	var Router = ReactRouter;
+	var Route = Router.Route; 
+	var DefaultRoute = Router.DefaultRoute;
+	var Link = Router.Link 
+	var RouteHandler = Router.RouteHandler;
+
+	var routes = (
+	  <Route name="RecipeBook" path="/" handler={RecipeBook}>
+	    <DefaultRoute handler={Home}/>
+	    <Route name="recipeDetails" path="/recipeDetails/:_id" handler={RecipeDetails}/>
+	    <Route name="recipes" handler={RecipeList}/>
+	    <Route name="recipe" path="recipe" handler={Recipe}/>
+	    <Route name="create" handler={RecipeForm}/>
+	  </Route>
+	);
+	Router.run(routes, function (Handler, state) {
+  	var params = state.params;
+  	React.render(<Handler params={params}/>, document.body);
+	});
+	</script>
+</body>
+</html>

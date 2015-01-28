@@ -1,0 +1,12 @@
+Glossary: 
+
+Component - view
+Action
+Store
+key - could be id
+
+before: place in landscape:
+	no two way binding a la angular
+	trello article / backbone
+after: perf
+	differentiators on computation vs memory
