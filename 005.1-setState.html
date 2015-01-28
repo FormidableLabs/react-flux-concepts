@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <head>
 	<style type="text/css">
@@ -13,18 +12,23 @@
 
 
 	<script type="text/jsx">
-			var InterfaceComponent = React.createClass({
+      var InterfaceComponent = React.createClass({
         getInitialState : function() {
           return {
-            name : "colin",
-            job  : "developer"
+            name : "Colin"
           };
         },
+        handleClick : function() {
+          this.setState({
+            name : "Ryan"
+          });
+        },
         render : function() {
-          return <div>
-            My name is {this.state.name}
-            and I am a {this.state.job}.
-          </div>;
+          return (
+            <div onClick={this.handleClick}>
+            hello {this.state.name}
+            </div>
+          )
         }
       });
 
@@ -32,6 +36,7 @@
         <InterfaceComponent />,
         document.body
       );
+
 	</script>
 </body>
 </html>

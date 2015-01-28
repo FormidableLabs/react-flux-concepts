@@ -1,76 +1,96 @@
-/** McFly */
+<!DOCTYPE html>
+<head>
+    <style type="text/css">
 
-var Flux = new McFly();
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+    <script src="http://kenwheeler.github.io/mcfly/McFly.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+    <script type="text/jsx">
 
-/** Store */
+        /** McFly */
 
-_todos = [];
+        var Flux = new McFly();
 
-function addTodo(text){
-    _todos.push(text);
-}
+        /** Store */
 
-var TodoStore = Flux.createStore({
-    getTodos: function(){
-       return _todos;
-    }
-}, function(payload){
-    if(payload.actionType === "ADD_TODO") {
-        addTodo(payload.text);
-        TodoStore.emitChange();
-    }
-});
+        _todos = [];
 
-/** Actions */
+        function addTodo(text){
+            _todos.push(text);
+        }
 
-var TodoActions = Flux.createActions({
-    addTodo: function(text){
-       return {
-          actionType: "ADD_TODO",
-          text: text
-       }
-    }
-});
+        var TodoStore = Flux.createStore({
+            getTodos: function(){
+               return _todos;
+            }
+        }, function(payload){
+            if(payload.actionType === "ADD_TODO") {
+                addTodo(payload.text);
+                TodoStore.emitChange();
+            }
+        });
 
-function getState(){
-   return {
-       todos: TodoStore.getTodos()
-   }
-}
+        /** Actions */
 
-/** Controller View */
+        var TodoActions = Flux.createActions({
+            addTodo: function(text){
+               return {
+                  actionType: "ADD_TODO",
+                  text: text
+               }
+            }
+        });
 
-var TodosController = React.createClass({
-    mixins: [TodoStore.mixin],
-    getInitialState: function(){
-        return getState();
-    },
-    onChange: function() {
-        this.setState(getState());
-    },
-    render: function() {
-        return <Todos todos={this.state.todos} />;
-    }
-});
+        function getState(){
+           return {
+               todos: TodoStore.getTodos()
+           }
+        }
 
-/** Component */
+        /** Controller View */
 
-var Todos = React.createClass({
-    addTodo: function(){
-        TodoActions.addTodo('test');
-    },
-    render: function() {
-        return (
-        <div className="todos_app">
-            <ul className="todos">
-                { this.props.todos.map(function(todo, index){
-                    return <li key={index}>Todo {index}</li>
-                })}
-            </ul>
-            <button onClick={this.addTodo}>Add Todo</button>
-        </div>
-        )
-    }
-});
- 
-React.render(<TodosController />, document.body);
+        var TodosController = React.createClass({
+            mixins: [TodoStore.mixin],
+            getInitialState: function(){
+                return getState();
+            },
+            onChange: function() {
+                this.setState(getState());
+            },
+            render: function() {
+                return <Todos todos={this.state.todos} />;
+            }
+        });
+
+        /** Component */
+
+        var Todos = React.createClass({
+            addTodo: function(){
+                TodoActions.addTodo('test');
+            },
+            render: function() {
+                return (
+                <div className="todos_app">
+                    <ul className="todos">
+                        { this.props.todos.map(function(todo, index){
+                            return <li key={index}>Todo {index}</li>
+                        })}
+                    </ul>
+                    <button onClick={this.addTodo}>Add Todo</button>
+                </div>
+                )
+            }
+        });
+         
+        React.render(<TodosController />, document.body);
+    </script>
+</body>
+</html>
+
+
