@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+	<style type="text/css">
+
+	</style>
+	<script src="http://fb.me/react-0.12.2.js"></script>
+	<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+</head>
+<body>
+	<div id="app-container"></div>
+
+	<script type="text/jsx">
+	var Recipe = React.createClass({
+		getInitialState: function () {
+			/* remember, we really invoked a function and passed in args. */
+			console.log(this.props)
+			/* Recipe.getInitialState(): must return an object or null */
+			return null;
+		},
+	  render: function() {
+	    return (
+	      <div>
+	        <h2> {this.props.title} </h2>
+	        <p> {this.props.instructions} </p>
+	      </div>
+	    );
+	  }
+	});
+	var RecipeList = React.createClass({
+	  render: function() {
+	    return (
+	      <div>
+	      	RecipeList.
+	      	<Recipe
+	      		title="Stuffed Chard"
+	      		instructions="Stuff the chard..."
+	      	/>
+	      	<Recipe
+	      		title="Eggplant and Polenta"
+	      		instructions="Put the eggplant in the oven..."
+	      	/>
+	      </div>
+	    );
+	  }
+	});
+	var RecipeForm = React.createClass({
+	  render: function() {
+	    return (
+	      <div >
+	        RecipeForm.
+	      </div>
+	    );
+	  }
+	});
+	var RecipeBook = React.createClass({
+	  render: function() {
+	    return (
+	      <div>
+	        Hello, world! I am a RecipeBook.
+	        <RecipeList/>
+	        <RecipeForm/>
+	      </div>
+	    );
+	  }
+	});
+	React.render(
+	  <RecipeBook />,
+	  document.getElementById('app-container')
+	);
+	</script>
+</body>
+</html>
