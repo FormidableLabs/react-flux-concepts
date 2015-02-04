@@ -34,6 +34,9 @@
                 addTodo(payload.text);
                 TodoStore.emitChange();
             }
+            if(payload.actionType === "KITTEN_LAUNCH") {
+                console.log("Kitten Launched! ", payload)
+            }
         });
 
         /** Actions */
@@ -44,6 +47,12 @@
                   actionType: "ADD_TODO",
                   text: text
                }
+            },
+            kittenLaunch: function(data){
+                return {
+                    actionType: "KITTEN_LAUNCH",
+                    data: data
+                }
             }
         });
 
@@ -72,22 +81,47 @@
 
         var Todos = React.createClass({
             addTodo: function(){
-                TodoActions.addTodo('test');
+                // TodoActions.addTodo({data: foo});
+            },
+            kittens: function(kittenData){
+                TodoActions.kittenLaunch({kitten: kittenData})
             },
             render: function() {
                 return (
                 <div className="todos_app">
+                    <Input changeKittensHandlerFromParent={this.kittens}/> 
                     <ul className="todos">
                         { this.props.todos.map(function(todo, index){
-                            return <li key={index}>Todo {index}</li>
+                            return <li key={index}>Todo {todo}</li>
                         })}
                     </ul>
-                    <button onClick={this.addTodo}>Add Todo</button>
+                    <button onClick={this.addTodo}>Clear</button>
                 </div>
                 )
             }
         });
-         
+        
+        /** Input */
+
+        var Input = React.createClass({
+            getInitialState: function(){
+                return null;
+            },
+            changeHandler: function (){
+                var inputValue = this.refs.inv.getDOMNode().value;
+                this.props.changeKittensHandlerFromParent(inputValue)
+            },
+            render: function() {
+                return (
+                    <input ref="inv" onChange={this.changeHandler} />
+                    )
+            }
+        });
+
+
+
+
+
         React.render(<TodosController />, document.body);
     </script>
 </body>
