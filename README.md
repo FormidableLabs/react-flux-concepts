@@ -1,2 +1,2 @@
 # react-flux-concepts
-Step by step building the recipe app in react &amp; flux. Steps are on numbered branches.
+Step by step building the recipes-flux app in react &amp; flux.
