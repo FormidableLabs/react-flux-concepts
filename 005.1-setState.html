@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <head>
 	<style type="text/css">
@@ -15,18 +16,29 @@
       var Recipe = React.createClass({
         getInitialState : function() {
           return {
-            ingredient : "Eggplant"
+            dropDownIsOpen : false
           };
         },
         handleClick : function() {
           this.setState({
-            ingredient : "Potato!"
+            dropDownIsOpen : !this.state.dropDownIsOpen
           });
         },
+        renderDropdown: function () {
+          return (
+            <div style={{ background: "#ccc" }}>
+              I am a dropdown!
+            </div>
+          );
+        },
         render : function() {
+          var dropdown = this.state.dropDownIsOpen ? this.renderDropdown() : null;
+
           return (
             <div onClick={this.handleClick}>
-            We need {this.state.ingredient}
+              Click me!
+
+              {dropdown}
             </div>
           )
         }
