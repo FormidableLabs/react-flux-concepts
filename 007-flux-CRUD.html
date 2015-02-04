@@ -19,7 +19,10 @@
 
         /** Store */
 
-        _recipes = [];
+        _recipes = [
+            {title: "Stuffed Chard", instructions: "Stuff the chard..."},
+            {title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
+        ];
 
         function addRecipes(recipe){
             _recipes.push(recipe);
@@ -73,7 +76,7 @@
                 this.setState(getRecipes());
             },
             render: function() {
-                return <Todos todos={this.state.todos} />;
+                return <Recipes recipes={this.state.recipes} />;
             }
         });
 
@@ -81,32 +84,27 @@
 
         var Recipes = React.createClass({
             addRecipe: function(){
-                // TodoActions.addTodo({data: foo});
+
             },
             kittens: function(kittenData){
                 TodoActions.kittenLaunch({kitten: kittenData})
             },
             render: function() {
+                { this.props.todos.map(function(recipe, index){
+                    return <Recipe key={index}> {recipe}</li>
+                })}
                 return (
-                <div className="todos_app">
+                <div>
+                    {recipeNodes}
                     <Input changeKittensHandlerFromParent={this.kittens}/> 
-                    <ul className="todos">
-                        { this.props.todos.map(function(todo, index){
-                            return <li key={index}>Todo {todo}</li>
-                        })}
-                    </ul>
-                    <button onClick={this.addTodo}>Clear</button>
+                    <button onClick={this.addRecipe}>Add Another</button>
                 </div>
                 )
             }
         });
         
         /** Input */
-
         var Input = React.createClass({
-            getInitialState: function(){
-                return null;
-            },
             /* Critical concept: firing parent methods passed down in prop */ 
             changeHandler: function (){
                 var inputValue = this.refs.inv.getDOMNode().value;
@@ -118,10 +116,6 @@
                     )
             }
         });
-
-
-
-
 
         React.render(<RecipeBook />, document.body);
     </script>
