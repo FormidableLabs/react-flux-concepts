@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+    <style type="text/css">
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+    <script src="https://kenwheeler.github.io/mcfly/McFly.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+    <script type="text/jsx">
+
+        /** McFly */
+
+        var Flux = new McFly();
+
+        /** Store */
+
+        _recipes = [];
+
+        function addRecipes(recipe){
+            _recipes.push(recipe);
+        }
+
+        function clearRecipes(){
+            _recipes = [];
+        }
+
+        function deleteRecipe(index){
+            _recipes.splice(index,1);
+        }
+
+        var RecipeStore = Flux.createStore({
+            getRecipes: function(){
+               return _recipes;
+            }
+        }, function(payload){
+            if(payload.actionType === "ADD_RECIPE") {
+                addRecipes(payload.text);
+                RecipeStore.emitChange();
+            }
+            if(payload.actionType === "CLEAR_RECIPES") {
+                clearRecipes();
+                RecipeStore.emitChange();
+            }
+            if(payload.actionType === "DELETE_RECIPE") {
+                deleteRecipe(payload.index);
+                RecipeStore.emitChange();
+            }
+        });
+
+        /** Actions */
+
+        var RecipeActions = Flux.createActions({
+            addRecipe: function(text){
+               return {
+                  actionType: "ADD_RECIPE",
+                  text: text
+               }
+            },
+            clearRecipes: function(){
+               return {
+                  actionType: "CLEAR_RECIPES"
+               }
+            },
+            deleteRecipe: function(index){
+               return {
+                  actionType: "DELETE_RECIPE",
+                  index: index
+               }
+            }
+        });
+
+        function getRecipes(){
+           return {
+               recipes: RecipeStore.getRecipes()
+           }
+        }
+
+        /** Controller View */
+
+        var RecipeBook = React.createClass({
+            mixins: [RecipeStore.mixin],
+            getInitialState: function(){
+                return getRecipes();
+            },
+            storeDidChange: function() {
+                console.log('changed')
+                this.setState(getRecipes());
+            },
+            render: function() {
+                return <Recipes recipes={this.state.recipes} />;
+            }
+        });
+
+        /** Component */
+
+        var Recipes = React.createClass({
+            addRecipe: function(){
+                RecipeActions.addRecipe(this.refs.inv.getDOMNode().value);
+                this.refs.inv.getDOMNode().value = "";
+            },
+            clearRecipes: function(){
+                RecipeActions.clearRecipes();
+            },
+            deleteRecipe: function(index){
+                RecipeActions.deleteRecipe(index);
+            },
+            render: function() {
+                var recipeNodes = this.props.recipes.map(function(recipe, index){
+                        return <li key={index}>Recipe {recipe} <button type="button" onClick={self.deleteRecipe.bind(self, index)}>Delete</button></li>
+                    })
+                /**
+                * HOMEWORK: Fix the form functionality:
+                * 
+                * 1. Make input a sub component.
+                * 2. Pass in a method from the parent that fires an action with form instance data.
+                * 3. Re render the inputs every time the store updates with the new values from props.
+                * 4. Now everything in the UI is a reflection of the store. UI is data. Data is UI. Om.
+                * 
+                * -- Hint will be mailed out after this meetup
+                * -- Solution will be mailed out before the next meetup. 
+                * -- Extra credit: https://github.com/facebook/react/issues/955
+                */
+                return (
+                <div className="todos_app">
+                    <input type="text" value={this.props.HOMEWORK} ref="inv"/>
+                    <ul className="recipes">
+                        {recipeNodes}
+                    </ul>
+                    <button onClick={this.clearRecipes}>Clear</button>
+                    <button onClick={this.addRecipe}>Add</button>
+                </div>
+                )
+            }
+        });
+
+        React.render(<RecipeBook />, document.body);
+    </script>
+</body>
+</html>
