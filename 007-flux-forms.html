@@ -19,20 +19,20 @@
 
         /** Store */
 
-        _todos = [];
+        _recipes = [];
 
-        function addTodo(text){
-            _todos.push(text);
+        function addRecipes(recipe){
+            _recipes.push(recipe);
         }
 
-        var TodoStore = Flux.createStore({
-            getTodos: function(){
-               return _todos;
+        var RecipeStore = Flux.createStore({
+            getRecipes: function(){
+               return _recipes;
             }
         }, function(payload){
-            if(payload.actionType === "ADD_TODO") {
+            if(payload.actionType === "ADD_RECIPE") {
                 addTodo(payload.text);
-                TodoStore.emitChange();
+                RecipeStore.emitChange();
             }
             if(payload.actionType === "KITTEN_LAUNCH") {
                 console.log("Kitten Launched! ", payload)
@@ -41,10 +41,10 @@
 
         /** Actions */
 
-        var TodoActions = Flux.createActions({
+        var RecipeActions = Flux.createActions({
             addTodo: function(text){
                return {
-                  actionType: "ADD_TODO",
+                  actionType: "ADD_RECIPE",
                   text: text
                }
             },
@@ -56,21 +56,21 @@
             }
         });
 
-        function getState(){
+        function getRecipes(){
            return {
-               todos: TodoStore.getTodos()
+               todos: RecipeStore.getRecipes()
            }
         }
 
         /** Controller View */
 
-        var TodosController = React.createClass({
-            mixins: [TodoStore.mixin],
+        var RecipeBook = React.createClass({
+            mixins: [RecipeStore.mixin],
             getInitialState: function(){
-                return getState();
+                return getRecipes();
             },
             onChange: function() {
-                this.setState(getState());
+                this.setState(getRecipes());
             },
             render: function() {
                 return <Todos todos={this.state.todos} />;
@@ -79,8 +79,8 @@
 
         /** Component */
 
-        var Todos = React.createClass({
-            addTodo: function(){
+        var Recipes = React.createClass({
+            addRecipe: function(){
                 // TodoActions.addTodo({data: foo});
             },
             kittens: function(kittenData){
@@ -107,6 +107,7 @@
             getInitialState: function(){
                 return null;
             },
+            /* Critical concept: firing parent methods passed down in prop */ 
             changeHandler: function (){
                 var inputValue = this.refs.inv.getDOMNode().value;
                 this.props.changeKittensHandlerFromParent(inputValue)
@@ -122,7 +123,7 @@
 
 
 
-        React.render(<TodosController />, document.body);
+        React.render(<RecipeBook />, document.body);
     </script>
 </body>
 </html>

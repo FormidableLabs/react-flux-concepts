@@ -1,3 +1,4 @@
+<!-- https://docs.google.com/drawings/d/1hippuxmqixmozTPXGE8Ma5h8GMApVKyaGZk5OYnonwE/edit?usp=sharing -->
 <!DOCTYPE html>
 <head>
 	<style type="text/css">
@@ -5,13 +6,6 @@
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
-	<script type="text/javascript">
-		/* STEP 0: define some data globally */ 
-		var data = [
-			{title: "Stuffed Chard", instructions: "Stuff the chard..."},
-			{title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
-		];
-	</script>
 </head>
 <body>
 	<div id="app-container"></div>
@@ -75,9 +69,14 @@
 	    );
 	  }
 	});
+
+	window.recipeData = [
+		{title: "Stuffed Chard", instructions: "Stuff the chard..."},
+		{title: "Eggplant and Polenta", instructions: "Put the eggplant in the oven..."}
+	];
 	React.render(
-		/* STEP 1: pass the global data variable into the controller view */
-	  <RecipeBook data={data} />,
+		/* STEP 1: pass the data into the controller view */
+	  <RecipeBook data={window.recipeData} />,
 	  document.getElementById('app-container')
 	);
 	</script>

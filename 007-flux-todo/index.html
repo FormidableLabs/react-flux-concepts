@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+    <style type="text/css">
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+    <script src="http://kenwheeler.github.io/mcfly/McFly.js"></script>
+    <script type="text/javascript" src="store.js"></script>
+    <script type="text/javascript" src="actions.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+    <script type="text/jsx">
+
+        /** McFly */
+
+        var Flux = new McFly();
+
+        /* Utility */ 
+
+        function getRecipes(){
+           return {
+               recipes: RecipeStore.getRecipes()
+           }
+        }
+
+        /** Controller View */
+
+        var RecipesController = React.createClass({
+            mixins: [TodoStore.mixin],
+            getInitialState: function(){
+                return getRecipes ();
+            },
+            onChange: function() {
+                this.setState(getState());
+            },
+            render: function() {
+                return <Todos todos={this.state.todos} />;
+            }
+        });
+
+        /** Component */
+
+        var Todos = React.createClass({
+            addTodo: function(){
+                // TodoActions.addTodo({data: foo});
+            },
+            kittens: function(kittenData){
+                TodoActions.kittenLaunch({kitten: kittenData})
+            },
+            render: function() {
+                return (
+                <div className="todos_app">
+                    <Input changeKittensHandlerFromParent={this.kittens}/> 
+                    <ul className="todos">
+                        { this.props.todos.map(function(todo, index){
+                            return <li key={index}>Todo {todo}</li>
+                        })}
+                    </ul>
+                    <button onClick={this.addTodo}>Clear</button>
+                </div>
+                )
+            }
+        });
+        
+        /** Input */
+
+        var Input = React.createClass({
+            getInitialState: function(){
+                return null;
+            },
+            changeHandler: function (){
+                var inputValue = this.refs.inv.getDOMNode().value;
+                this.props.changeKittensHandlerFromParent(inputValue)
+            },
+            render: function() {
+                return (
+                    <input ref="inv" onChange={this.changeHandler} />
+                    )
+            }
+        });
+
+
+
+
+
+        React.render(<TodosController />, document.body);
+    </script>
+</body>
+</html>
+
+

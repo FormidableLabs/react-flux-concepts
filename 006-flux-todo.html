@@ -1,0 +1,97 @@
+<!-- https://docs.google.com/drawings/d/18EpRSCM3yicxFrF0CVODMs-uQUEfRDstXPtEZnWlqOc/edit?usp=sharing -->
+<!DOCTYPE html>
+<head>
+    <style type="text/css">
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+    <script src="http://kenwheeler.github.io/mcfly/McFly.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+    <script type="text/jsx">
+
+        /** McFly */
+
+        var Flux = new McFly();
+
+        /** Store */
+
+        _recipes = [];
+
+        function addRecipe(text){
+            _recipes.push(text);
+        }
+
+        var RecipeStore = Flux.createStore({
+            getRecipes: function(){
+               return _recipes;
+            }
+        }, function(payload){
+            if(payload.actionType === "ADD_RECIPE") {
+                addRecipe(payload.text);
+                RecipeStore.emitChange();
+            }
+        });
+
+        /** Actions */
+
+        var RecipeActions = Flux.createActions({
+            addRecipe: function(text){
+               return {
+                  actionType: "ADD_RECIPE",
+                  text: text
+               }
+            }
+        });
+
+        function getRecipes(){
+           return {
+               recipes: RecipeStore.getRecipes()
+           }
+        }
+
+        /** Controller View */
+
+        var RecipesController = React.createClass({
+            mixins: [RecipeStore.mixin],
+            getInitialState: function(){
+                return getRecipes();
+            },
+            onChange: function() {
+                this.setState(getRecipes());
+            },
+            render: function() {
+                return <Recipes recipes={this.state.recipes} />;
+            }
+        });
+
+        /** Component */
+
+        var Recipes = React.createClass({
+            addRecipe: function(){
+                RecipeActions.addRecipe({_id: Math.floor(Math.random()*1000000)});
+            },
+            render: function() {
+                return (
+                <div className="recipes_app">
+                    <ul className="recipes">
+                        { this.props.recipes.map(function(recipe, index){
+                            return <li key={index}>recipe {index} : {recipe._id}</li>
+                        })}
+                    </ul>
+                    <button onClick={this.addRecipe}>Add recipe</button>
+                </div>
+                )
+            }
+        });
+
+        React.render(<RecipesController />, document.body);
+    </script>
+</body>
+</html>
+
+

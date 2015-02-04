@@ -12,28 +12,28 @@
 
 
 	<script type="text/jsx">
-      var InterfaceComponent = React.createClass({
+      var Recipe = React.createClass({
         getInitialState : function() {
           return {
-            name : "Colin"
+            ingredient : "Eggplant"
           };
         },
         handleClick : function() {
           this.setState({
-            name : "Ryan"
+            ingredient : "Potato!"
           });
         },
         render : function() {
           return (
             <div onClick={this.handleClick}>
-            hello {this.state.name}
+            We need {this.state.ingredient}
             </div>
           )
         }
       });
 
       React.renderComponent(
-        <InterfaceComponent />,
+        <Recipe />,
         document.body
       );
 

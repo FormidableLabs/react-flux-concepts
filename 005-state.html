@@ -13,25 +13,28 @@
 
 
 	<script type="text/jsx">
-			var InterfaceComponent = React.createClass({
+
+
+      var Recipe = React.createClass({
         getInitialState : function() {
           return {
-            name : "colin",
-            job  : "developer"
+            ingredient : "Eggplant"
           };
         },
         render : function() {
-          return <div>
-            My name is {this.state.name}
-            and I am a {this.state.job}.
-          </div>;
+          return (
+            <div>
+            We need {this.state.ingredient}
+            </div>
+          )
         }
       });
 
       React.renderComponent(
-        <InterfaceComponent />,
+        <Recipe />,
         document.body
       );
+
 	</script>
 </body>
 </html>
