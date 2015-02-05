@@ -1,23 +1,24 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<style type="text/css">
 
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
-	<!-- ADDING REACT ROUTER --> 
+	<!-- ADDING REACT ROUTER -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
 	<script type="text/javascript">
 		var data = [
 			{
-				_id: "QQQ", 
-				title: "Stuffed Chard", 
-				instructions: "Stuff the chard...", 
+				_id: "QQQ",
+				title: "Stuffed Chard",
+				instructions: "Stuff the chard...",
 				detailsRendered: "FOO CHARD DETAILS!"
 			},
 			{
-				_id: "YYY", 
-				title: "Eggplant and Polenta", 
+				_id: "YYY",
+				title: "Eggplant and Polenta",
 				instructions: "Put the eggplant in the oven...",
 				detailsRendered: "BAR EGGPLANT DETAILS!"
 			}
@@ -86,10 +87,10 @@
 	  render: function() {
 	    return (
 	      <div>
-		      <div> 
+		      <div>
 		      	<Link to="/">Home</Link>
 		      	<Link to="recipes"> Recipes </Link>
-		      </div> 
+		      </div>
 	        Hello, world! I am a RecipeBook.
 	        <RouteHandler {...this.props}/>
 	      </div>
@@ -98,14 +99,14 @@
 	});
 
 	var Router = ReactRouter;
-	var Route = Router.Route; 
+	var Route = Router.Route;
 	var DefaultRoute = Router.DefaultRoute;
-	var Link = Router.Link 
+	var Link = Router.Link
 	var RouteHandler = Router.RouteHandler;
-	/** 
+	/**
 	* STEP 1: define routes & 'handlers' (components are handlers)
 	* see: https://github.com/rackt/react-router/blob/master/docs/guides/overview.md#with-react-router
-	*/ 
+	*/
 	var routes = (
 	  <Route name="RecipeBook" path="/" handler={RecipeBook}>
 	    <DefaultRoute handler={Home}/>
