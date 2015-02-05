@@ -71,7 +71,7 @@
             getInitialState: function(){
                 return getRecipes();
             },
-            onChange: function() {
+            stateDidChange: function() {
                 this.setState(getRecipes());
             },
             render: function() {
