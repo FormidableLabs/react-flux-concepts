@@ -1,5 +1,6 @@
 <!-- https://docs.google.com/drawings/d/1hippuxmqixmozTPXGE8Ma5h8GMApVKyaGZk5OYnonwE/edit?usp=sharing -->
 <!DOCTYPE html>
+<html>
 <head>
 	<style type="text/css">
 
@@ -25,15 +26,15 @@
 	var RecipeList = React.createClass({
 	  render: function() {
 	  	/**
-	  	* STEP 3: iterate over the data received in props, 
+	  	* STEP 3: iterate over the data received in props,
 			* passing properties of each item into the collection
-			* into a unique child component. 
+			* into a unique child component.
 	  	*/
 	    var recipeNodes = this.props.data.map(function(recipe, index){
-	    	/** 
-	    	* each item in a collection needs a key... see: 
+	    	/**
+	    	* each item in a collection needs a key... see:
 				* http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-	    	*/ 
+	    	*/
 	    	return (
 	    		<Recipe
 	    			key={index}

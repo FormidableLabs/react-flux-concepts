@@ -1,5 +1,6 @@
 <!-- https://docs.google.com/drawings/d/18EpRSCM3yicxFrF0CVODMs-uQUEfRDstXPtEZnWlqOc/edit?usp=sharing -->
 <!DOCTYPE html>
+<html>
 <head>
     <style type="text/css">
 
@@ -15,13 +16,13 @@
     <script type="text/jsx">
 
           /**
-          * 
-          * Assignment: 
-          * 
+          *
+          * Assignment:
+          *
           * 1. Add a new button that has a new callback that fires a new action
           * 2. Update the store with new data (ie., "Kittens" + Math.floor(Math.Random()*100000))
           * 3. console.log(getRecipes()) the new store value from a component's render method to make sure the data made the trip
-          * 
+          *
           */
 
         /** McFly */
@@ -71,7 +72,7 @@
             getInitialState: function(){
                 return getRecipes();
             },
-            onChange: function() {
+            stateDidChange: function() {
                 this.setState(getRecipes());
             },
             render: function() {
