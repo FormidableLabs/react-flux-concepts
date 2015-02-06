@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<style type="text/css">
 
@@ -10,14 +11,14 @@
 	<script type="text/javascript">
 		var data = [
 			{
-				_id: "QQQ", 
-				title: "Stuffed Chard", 
-				instructions: "Stuff the chard...", 
+				_id: "QQQ",
+				title: "Stuffed Chard",
+				instructions: "Stuff the chard...",
 				detailsRendered: "FOO CHARD DETAILS"
 			},
 			{
-				_id: "YYY", 
-				title: "Eggplant and Polenta", 
+				_id: "YYY",
+				title: "Eggplant and Polenta",
 				instructions: "Put the eggplant in the oven...",
 				detailsRendered: "BAR EGGPLANT DETAILS"
 			}
@@ -32,14 +33,14 @@
 	var RecipeDetails = React.createClass({
 		getInitialState: function () {
 			console.log(this.props)
-			/* grab the correct recipe, set it to state */ 
+			/* grab the correct recipe, set it to state */
 			return _.find(this.props.data, {_id: this.props.params._id});
-		},	
+		},
 		render: function(){
-			
+
 			return (
 				<div>
-					<h3> {this.state.title} </h3> 
+					<h3> {this.state.title} </h3>
 					<p> {this.state.instructions} </p>
 					<p> {this.state.detailsRendered} id: {this.props.params._id} </p>
 					<RouteHandler {...this.props}/>
@@ -105,11 +106,11 @@
 	  render: function() {
 	    return (
 	      <div>
-		      <div> 
+		      <div>
 		      	<Link to="/">Home</Link>
 		      	<Link to="recipes"> Recipes </Link>
 		      	<Link to="create"> Create </Link>
-		      </div> 
+		      </div>
 	        **Hello, world! I am a RecipeBook.**
 	        <RouteHandler {...this.props}/>
 	      </div>
@@ -118,9 +119,9 @@
 	});
 
 	var Router = ReactRouter;
-	var Route = Router.Route; 
+	var Route = Router.Route;
 	var DefaultRoute = Router.DefaultRoute;
-	var Link = Router.Link 
+	var Link = Router.Link
 	var RouteHandler = Router.RouteHandler;
 	var routes = (
 	  <Route name="RecipeBook" path="/" handler={RecipeBook}>
