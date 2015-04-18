@@ -4,11 +4,14 @@
   "description": "Branches of this repo cover the concepts of react and flux in a hands on way",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" : "http-server -p 9009"
   },
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
     "mcfly": "0.0.8"
+  },
+  "devDependencies": {
+    "http-server": "^0.8.0"
   }
 }
