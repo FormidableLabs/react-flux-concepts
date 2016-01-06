@@ -111,6 +111,7 @@
                 RecipeActions.deleteRecipe(index);
             },
             render: function() {
+                var self = this;
                 var recipeNodes = this.props.recipes.map(function(recipe, index){
                         return <li key={index}>Recipe {recipe} <button type="button" onClick={self.deleteRecipe.bind(self, index)}>Delete</button></li>
                     })
